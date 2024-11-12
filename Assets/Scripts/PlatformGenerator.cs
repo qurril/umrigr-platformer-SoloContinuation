@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class PlatformGenerator : MonoBehaviour
+public class PlatformGenerator : NetworkBehaviour
 {
     [SerializeField]
-    GameObject[] platformPrefabs;
+    NetworkPrefabRef[] platformPrefabs;
     [Tooltip("The rate at which platforms are spawned, in seconds between platforms")]
     [SerializeField]
     float spawnRate = 2f;
@@ -22,13 +23,13 @@ public class PlatformGenerator : MonoBehaviour
 
     void Update()
     {
-        if (Time.time % spawnRate < Time.deltaTime)
+        if (Time.time % spawnRate < Time.deltaTime && Runner.IsServer)
         {
             Vector3 spawnPosition = new Vector3(0, Camera.main.orthographicSize * 1.1f, 0);
 
             // Randomly select a platform prefab
-            GameObject platformPrefab = platformPrefabs[Random.Range(0, platformPrefabs.Length)];
-            GameObject instance = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
+            NetworkPrefabRef platformPrefab = platformPrefabs[Random.Range(0, platformPrefabs.Length)];
+            NetworkObject instance = Runner.Spawn(platformPrefab, spawnPosition);
 
             instance.transform.localScale = new Vector3(Random.Range(minWidth, maxWidth), 0.2f, 1);
             instance.GetComponent<HorizontalMovement>().speed = Random.Range(minHorizontalSpeed, maxHorizontalSpeed);
