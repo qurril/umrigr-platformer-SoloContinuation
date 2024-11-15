@@ -13,10 +13,11 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
 {
 
     private static string _playerName = null;
-    [SerializeField] private PlayerCharacterController _playerPrefab = null;
-    [SerializeField] private GameManager _gameManagerPrefab = null;
+   // [SerializeField] private PlayerCharacterController _playerPrefab = null;
+   // [SerializeField] private GameManager _gameManagerPrefab = null;
     [SerializeField] private NetworkRunner _networkRunnerPrefab = null;
     [SerializeField] private int _playerCount = 10;
+    
     private NetworkRunner _runner = null;
     private NetworkSceneManagerDefault _networkSceneManager = null;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
@@ -24,7 +25,7 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
 
     public PlayerCharacterController LocalCharacterController { get; set; }
     public List<SessionInfo> Sessions => _sessions;
-    
+
     public string PlayerName => _playerName;
 
 
@@ -32,6 +33,9 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
     private void Awake()
     {
         base.Awake();
+
+        if (Instance == null) Debug.LogError("No instance");
+
         _networkSceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();
         _runner = gameObject.AddComponent<NetworkRunner>();
     }
@@ -42,14 +46,32 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         _runner.JoinSessionLobby(SessionLobby.ClientServer);
     }
 
+    //Ovdew ide spajanje na session i kreiranje sessiona
+
+    public async void JoinSession(string sessionName) {
+        _runner.ProvideInput = true;
+
+        await _runner.StartGame(new StartGameArgs { SessionName = sessionName, GameMode = GameMode.Client });
+    }
+
+    public async void CreateSession(string sessionName) {
+        await _runner.StartGame(new StartGameArgs()
+        {
+            GameMode = GameMode.Host,
+            SessionName = sessionName,
+            Scene = SceneRef.FromIndex(1),
+            PlayerCount = _playerCount,
+            SceneManager = _networkSceneManager,
+            
+        });
+
+    }
+
 
 
     public void LeaveSession()
     {
-        /*
-         * U ovoj metodi je potrebno pozvati Shutdown metodu instance NetworkRunner klase, uèitati poèetni ekran 
-         * i otkljuèati cursor korisnika
-         */
+        
         _runner.Shutdown();
         SceneManager.LoadScene(0);
         Cursor.lockState = CursorLockMode.None;
@@ -59,10 +81,7 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        /*
-         * U ovoj metodi je potrebno lokalno spremiti osvježenu listu soba, te osvježiti prikaz liste soba pozivom 
-         * pripadne metode klase SessionView.
-         */
+      
         _sessions = sessionList;
         SessionView.Instance.UpdateSessionList();
 
@@ -75,11 +94,11 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         {
             if (player == runner.LocalPlayer)
             {
-                runner.Spawn(_gameManagerPrefab);
+           //     runner.Spawn(_gameManagerPrefab);
             }
 
-            NetworkObject playerObject = runner.Spawn(_playerPrefab.gameObject, inputAuthority: player);
-            _spawnedCharacters.Add(player, playerObject);
+          //  NetworkObject playerObject = runner.Spawn(_playerPrefab.gameObject, inputAuthority: player);
+           // _spawnedCharacters.Add(player, playerObject);
 
             
         }
@@ -96,7 +115,12 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        base.OnApplicationQuit();
 
+        if (_runner != null && !_runner.IsDestroyed()) _runner.Shutdown();
+    }
 
     #region UnusedCallbacks
     public void OnInput(NetworkRunner runner, NetworkInput input)

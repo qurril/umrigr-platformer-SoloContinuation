@@ -13,10 +13,9 @@ GameObject:
   - component: {fileID: 2928729931389689881}
   - component: {fileID: 2459574948824081741}
   - component: {fileID: 8985496397179771770}
-  - component: {fileID: 518343506149517962}
-  - component: {fileID: 4638631403789816277}
   - component: {fileID: 6023469611370208091}
   - component: {fileID: -764530251243201007}
+  - component: {fileID: -499988703774297476}
   m_Layer: 3
   m_Name: Platform_Ice
   m_TagString: Untagged
@@ -157,33 +156,6 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &518343506149517962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4600006653436865025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a907e4ff6b3f6e2458d5ce2dfd289aae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  motionMagnitude: 10
---- !u!114 &4638631403789816277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4600006653436865025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16a441c6e82d71c44b553b9610769968, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &6023469611370208091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +174,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: -764530251243201007}
+  - {fileID: -499988703774297476}
 --- !u!114 &-764530251243201007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,3 +191,18 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &-499988703774297476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4600006653436865025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418cffafded92cd4295172869815e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedHorizontal: 5
+  speedVertical: 5
+  motionMagnitude: 3

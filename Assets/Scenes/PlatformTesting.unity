@@ -650,6 +650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform Generator
       objectReference: {fileID: 0}
+    - target: {fileID: 5514105314107830187, guid: b82c2b9ad12e5724284f40adcdff61ef, type: 3}
+      propertyPath: SortKey
+      value: 1871660486
+      objectReference: {fileID: 0}
     - target: {fileID: 6110922918550660177, guid: b82c2b9ad12e5724284f40adcdff61ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
