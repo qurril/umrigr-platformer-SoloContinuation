@@ -29,13 +29,21 @@ public class PlatformGenerator : NetworkBehaviour
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-screenWidth / 2, screenWidth / 2)+Camera.main.transform.position.x, Camera.main.orthographicSize * 1.1f, 0);
 
+
+            Vector3 scaleVec = new Vector3(Random.Range(minWidth, maxWidth), 0.2f, 1);
             // Randomly select a platform prefab
             NetworkPrefabRef platformPrefab = platformPrefabs[Random.Range(0, platformPrefabs.Length)];
-            NetworkObject instance = Runner.Spawn(platformPrefab, spawnPosition);
 
-            instance.transform.localScale = new Vector3(Random.Range(minWidth, maxWidth), 0.2f, 1);
-            instance.GetComponent<PlatformScript>().speedHorizontal = Random.Range(minHorizontalSpeed, maxHorizontalSpeed);
-            instance.GetComponent<PlatformScript>().speedVertical = verticalSpeed;
+
+            NetworkObject instance = Runner.Spawn(platformPrefab, spawnPosition, Quaternion.identity,null  ,(runner, obj) => { 
+                var platformScript = obj.GetComponent<PlatformScript>();
+                platformScript.scale = scaleVec;
+                platformScript.speedHorizontal = Random.Range(minHorizontalSpeed, maxHorizontalSpeed);
+                platformScript.speedVertical = verticalSpeed;
+            });
+
+            
+            
         }
 
     }
