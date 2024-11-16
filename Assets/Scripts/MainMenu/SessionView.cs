@@ -42,24 +42,18 @@ public class SessionView : Singleton<SessionView>
     }
     public void UpdateSessionList() {
 
-        if (FusionConnection.Instance != null)
-        {
-            var sessions = FusionConnection.Instance.Sessions;
-            Debug.Log($"Sessions count: {sessions.Count}");
-        }
-        else
-        {
-            Debug.LogError("FusionConnection.Instance is null!");
-        }
+        
 
         foreach (var session in _sessions) {
             Destroy(session.gameObject);
         }
         _sessions.Clear();
 
+
         foreach (var sesInf in FusionConnection.Instance.Sessions) {
             SessionInfoView data = Instantiate(_sessionInfoprefab, _sessionListContainer.transform);
             data.ShowSession(sesInf.Name, sesInf.PlayerCount, sesInf.MaxPlayers, (isOn, sessionName) => SessionView.Instance.SessionOnToggle(isOn, sessionName), _sessionListContainer);
+            _sessions.Add(data);
         }
     }
 
