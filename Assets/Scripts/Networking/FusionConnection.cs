@@ -13,7 +13,7 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
 {
 
     private static string _playerName = null;
-   // [SerializeField] private PlayerCharacterController _playerPrefab = null;
+    [SerializeField] private PlayerCharacterController _playerPrefab = null;
    // [SerializeField] private GameManager _gameManagerPrefab = null;
     [SerializeField] private NetworkRunner _networkRunnerPrefab = null;
     [SerializeField] private int _playerCount = 10;
@@ -97,8 +97,8 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
            //     runner.Spawn(_gameManagerPrefab);
             }
 
-          //  NetworkObject playerObject = runner.Spawn(_playerPrefab.gameObject, inputAuthority: player);
-           // _spawnedCharacters.Add(player, playerObject);
+            NetworkObject playerObject = runner.Spawn(_playerPrefab.gameObject, inputAuthority: player);
+            _spawnedCharacters.Add(player, playerObject);
 
             
         }

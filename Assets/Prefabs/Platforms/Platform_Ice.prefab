@@ -204,5 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedHorizontal: 5
-  speedVertical: 5
+  speedVertical: 2
   motionMagnitude: 3
+  _scale: {x: 0, y: 0, z: 0}
