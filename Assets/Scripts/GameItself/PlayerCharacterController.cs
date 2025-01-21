@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCharacterController : NetworkBehaviour
 {
@@ -14,7 +15,8 @@ public class PlayerCharacterController : NetworkBehaviour
     
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 10f;
-
+    [SerializeField] private GameObject jumpUICanvasPrefab; // prefab canvasa sa indikatorima preostalih jumpova
+    private GameObject jumpUICanvas;    // objekt koji drzi stvoreni canvas
     [SerializeField] private float maxDistance = 0.5f;
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -36,7 +38,7 @@ public class PlayerCharacterController : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         DisablePlayerControls();
-
+        jumpUICanvas = Instantiate(jumpUICanvasPrefab);     // stvori canvas svakom igracu
     }
    
 
@@ -82,6 +84,8 @@ public class PlayerCharacterController : NetworkBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 jumpPressed = true;
                 jumpCount++;
+                UnityEngine.Debug.Log("Jumped");
+                UpdateJumps();  // nakon svakog skoka azuriraj jump cavnas
             }
 
             if (!input.Jump)
@@ -90,6 +94,28 @@ public class PlayerCharacterController : NetworkBehaviour
             }
         }
     }
+
+private void UpdateJumps()
+{
+    // dohvati holder 3 jump indikator gameobjekta
+    GameObject jumpCirclesHolder = jumpUICanvas.transform.GetChild(0).GetChild(0).gameObject;
+
+    for (int i = 0; i < maxJumps; i++)
+    {
+        // Dodi do indikatora kruga
+        var jumpCircle = jumpCirclesHolder.transform.GetChild(i).transform.GetChild(0).GetComponent<Image>();
+
+        if (i < jumpCount)  // postavi boju
+        {
+            jumpCircle.color = Color.grey;
+        }
+        else
+        {
+            jumpCircle.color = Color.yellow;
+        }
+    }
+}
+
 
     private bool checkGrounded() {
         
@@ -115,6 +141,7 @@ public class PlayerCharacterController : NetworkBehaviour
         {
             isGrounded = true;
             jumpCount = 0;
+            UpdateJumps();
         }
     }
 

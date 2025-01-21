@@ -50,14 +50,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425ce4659a0dd57429bc96a076bc0355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-
   moveSpeed: 5
-  jumpForce: 4
-  maxDistance: 0.6
+  jumpForce: 10
+  jumpUICanvasPrefab: {fileID: 6436485459954310902, guid: 316f91af423d912449e5f3f414eafb9a, type: 3}
+  maxDistance: 0.5
   platforms:
     serializedVersion: 2
-    m_Bits: 8
-
+    m_Bits: 0
+  maxJumps: 3
 --- !u!212 &8816760143066205630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -129,7 +129,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8722773547630684544}
   - {fileID: -3720060209472419236}
-  ForceRemoteRenderTimeframe: 0
 --- !u!50 &2315959824645613908
 Rigidbody2D:
   serializedVersion: 4
@@ -144,10 +143,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-
-  m_AngularDrag: 0.1
-  m_GravityScale: 0.5
-
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -158,7 +155,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &-4790438697415327427
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -206,7 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e690b5fb1084f5ab1c86457af401d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0.15
   SyncScale: 0
   SyncParent: 1
   _interpolationTarget: {fileID: 0}

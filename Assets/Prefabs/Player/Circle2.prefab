@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   jumpForce: 5
+  jumpUICanvasPrefab: {fileID: 6436485459954310902, guid: 316f91af423d912449e5f3f414eafb9a, type: 3}
   maxDistance: 0.5
   platforms:
     serializedVersion: 2
@@ -127,7 +128,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8722773547630684544}
   - {fileID: -3720060209472419236}
-  ForceRemoteRenderTimeframe: 0
 --- !u!50 &2315959824645613908
 Rigidbody2D:
   serializedVersion: 4
@@ -202,7 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e690b5fb1084f5ab1c86457af401d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0.15
   SyncScale: 0
   SyncParent: 1
   _interpolationTarget: {fileID: 0}
