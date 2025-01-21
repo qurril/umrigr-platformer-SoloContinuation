@@ -6684,8 +6684,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 8722773547630684544, guid: 474d4c13184cbef428778c2b71a5587a, type: 3}
+  _gameManagerPrefab: {fileID: 679171533948863389, guid: 18022908f33ec0d4e937b17bbff2aa37, type: 3}
   _networkRunnerPrefab: {fileID: 4025674159225223099, guid: 7aaeb5350b269e14299b874763b769b8, type: 3}
   _playerCount: 10
+  _spawnPlatforms: []
 --- !u!114 &1892591828
 MonoBehaviour:
   m_ObjectHideFlags: 0
