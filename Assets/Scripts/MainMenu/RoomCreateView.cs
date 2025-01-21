@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class RoomCreateView : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _roomNameIn = null;
+    [SerializeField] private TMP_InputField _maxPlayers = null;
     [SerializeField] private Button _createButton = null;
     [SerializeField] private Button _quiteButton = null;
     [SerializeField] private GameObject _sessionView = null;
@@ -26,7 +27,7 @@ public class RoomCreateView : MonoBehaviour
     }
 
     private void CreateRoom() {
-        FusionConnection.Instance.CreateSession(_roomNameIn.text);
+        FusionConnection.Instance.CreateSession(_roomNameIn.text, _maxPlayers.text);
     }
 
 }

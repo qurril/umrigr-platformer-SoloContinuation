@@ -51,6 +51,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8528058013046154564}
+  ForceRemoteRenderTimeframe: 0
 --- !u!114 &8528058013046154564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +71,7 @@ MonoBehaviour:
   - RawGuidValue: 71be01d48676c024da8686c928e158b5
   - RawGuidValue: 9d0a0d9e534849f44b298e90e3741953
   - RawGuidValue: 3c3d820a6b27ecc4180ff28af98d794d
-  spawnRate: 4
+  spawnRate: 6
   maxHorizontalSpeed: 10
   minHorizontalSpeed: 3
   verticalSpeed: 1

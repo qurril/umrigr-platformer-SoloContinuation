@@ -7,4 +7,5 @@ public struct NetorkData : INetworkInput
 {
     public Vector2 Movement;
     public bool Jump;
+    public bool Attack;
 }

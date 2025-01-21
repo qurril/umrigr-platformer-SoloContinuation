@@ -14,7 +14,7 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
 
     private static string _playerName = null;
     [SerializeField] private PlayerCharacterController _playerPrefab = null;
-   // [SerializeField] private GameManager _gameManagerPrefab = null;
+    [SerializeField] private GameManager _gameManagerPrefab = null;
     [SerializeField] private NetworkRunner _networkRunnerPrefab = null;
     [SerializeField] private int _playerCount = 10;
     
@@ -23,6 +23,8 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
     private List<SessionInfo> _sessions = new List<SessionInfo>();
 
+
+    public NetworkPlayerSpawner _playerSpawner = null;
     public PlayerCharacterController LocalCharacterController { get; set; }
     public List<SessionInfo> Sessions => _sessions;
 
@@ -53,14 +55,14 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
 
         await _runner.StartGame(new StartGameArgs { SessionName = sessionName, GameMode = GameMode.Client });
     }
-
-    public async void CreateSession(string sessionName) {
+    
+    public async void CreateSession(string sessionName, string maxPlayers) {
         await _runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Host,
             SessionName = sessionName,
             Scene = SceneRef.FromIndex(1),
-            PlayerCount = _playerCount,
+            PlayerCount = int.Parse(maxPlayers), 
             SceneManager = _networkSceneManager,
             
         });
@@ -94,7 +96,7 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         {
             if (player == runner.LocalPlayer)
             {
-           //     runner.Spawn(_gameManagerPrefab);
+                runner.Spawn(_gameManagerPrefab);
             }
 
             NetworkObject playerObject = runner.Spawn(_playerPrefab.gameObject, inputAuthority: player);

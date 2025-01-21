@@ -2789,6 +2789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _roomNameIn: {fileID: 1209605602}
+  _maxPlayers: {fileID: 1689493816}
   _createButton: {fileID: 977816390}
   _quiteButton: {fileID: 970039703}
   _sessionView: {fileID: 425349841}
@@ -6684,8 +6685,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 8722773547630684544, guid: 474d4c13184cbef428778c2b71a5587a, type: 3}
+  _gameManagerPrefab: {fileID: 6439871339526697807, guid: cd76a33f084d65147a20af14a00935b8, type: 3}
   _networkRunnerPrefab: {fileID: 4025674159225223099, guid: 7aaeb5350b269e14299b874763b769b8, type: 3}
   _playerCount: 10
+  _playerSpawner: {fileID: 0}
 --- !u!114 &1892591828
 MonoBehaviour:
   m_ObjectHideFlags: 0
