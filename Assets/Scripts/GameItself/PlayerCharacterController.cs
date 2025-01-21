@@ -1,5 +1,6 @@
 using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
+using Fusion.Addons.Physics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,10 +14,18 @@ public class PlayerCharacterController : NetworkBehaviour
     
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 10f;
+
     [SerializeField] private float maxDistance = 0.5f;
     private Rigidbody2D rb;
     private bool isGrounded;
     public LayerMask platforms;
+
+    [SerializeField] private int maxJumps = 3;
+
+
+    private int jumpCount;
+    private bool jumpPressed;
+
 
     private float defaultGravityScale = 1f;
 
@@ -36,8 +45,8 @@ public class PlayerCharacterController : NetworkBehaviour
     }
 
     private void InitServer() {
-        UnityEngine.Debug.Log($"{NetworkPlayerSpawner.Instance.getSpawnLocation().x} {NetworkPlayerSpawner.Instance.getSpawnLocation().y}");
-        rb.position = NetworkPlayerSpawner.Instance.getSpawnLocation();
+        //UnityEngine.Debug.Log($"{NetworkPlayerSpawner.Instance.getSpawnLocation().x} {NetworkPlayerSpawner.Instance.getSpawnLocation().y}");
+        //rb.position = NetworkPlayerSpawner.Instance.getSpawnLocation();
     }
 
 
@@ -46,6 +55,7 @@ public class PlayerCharacterController : NetworkBehaviour
         Active = false;
         defaultGravityScale = rb.gravityScale;
         rb.gravityScale = 0f;
+        UnityEngine.Debug.Log($"Gravity stored as  {defaultGravityScale}");
     }
 
     public void EnablePlayerControls()
@@ -57,17 +67,28 @@ public class PlayerCharacterController : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+
         if (Active && GetInput(out NetorkData input)){
+          
+        
+            // Horizontal movement
             float moveX = input.Movement.x;
             rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
 
-            
-            if (input.Jump && checkGrounded()) {
+            // Debounce jump input
+            if (input.Jump && !jumpPressed && jumpCount < maxJumps)
+            {
+
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                jumpPressed = true;
+                jumpCount++;
             }
 
+            if (!input.Jump)
+            {
+                jumpPressed = false;
+            }
         }
-
     }
 
     private bool checkGrounded() {
@@ -88,4 +109,27 @@ public class PlayerCharacterController : NetworkBehaviour
 
     
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.contacts[0].normal.y > 0.1f)
+        {
+            isGrounded = true;
+            jumpCount = 0;
+        }
+    }
+
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
+    }
+
+    public void HandleDeath()
+    {
+        if (Object.HasStateAuthority)
+        {
+            UnityEngine.Debug.Log($"Player {Object.InputAuthority.PlayerId} has died!");
+            gameObject.SetActive(false);
+        }
+    }
 }

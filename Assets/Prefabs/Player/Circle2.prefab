@@ -15,9 +15,8 @@ GameObject:
   - component: {fileID: 2315959824645613908}
   - component: {fileID: -4790438697415327427}
   - component: {fileID: -3720060209472419236}
-  - component: {fileID: 8355144567040516001}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: Circle2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,14 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425ce4659a0dd57429bc96a076bc0355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-
-  moveSpeed: 5
-  jumpForce: 4
-  maxDistance: 0.6
+  moveSpeed: 6
+  jumpForce: 5
+  maxDistance: 0.5
   platforms:
     serializedVersion: 2
-    m_Bits: 8
-
+    m_Bits: 0
+  maxJumps: 3
 --- !u!212 &8816760143066205630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -122,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 791618883
+  SortKey: 284001383
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -144,10 +142,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-
-  m_AngularDrag: 0.1
-  m_GravityScale: 0.5
-
+  m_AngularDrag: 0.05
+  m_GravityScale: 0.7
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -158,7 +154,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &-4790438697415327427
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -217,20 +213,3 @@ MonoBehaviour:
     Position: 0.01
     Rotation: 0.01
     Scale: 0.01
---- !u!114 &8355144567040516001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300286168496499420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9fd79d79a0fb459ababab9a78f00caa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _physicsAuthority: 2
-  _physicsTiming: 3
-  ClientPhysicsSimulation: 0
-  DeltaTimeMultiplier: 1
-  SetUnityFixedTimestep: 0
