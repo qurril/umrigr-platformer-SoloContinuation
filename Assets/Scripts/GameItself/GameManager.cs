@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System.Linq;
+using TMPro;
 
 public class GameManager : NetworkBehaviour
 {
 
     private static GameManager _instance;
     private PlayerCharacterController[] players;
-    
+    private TMP_Text countdownTitle;
 
     [Networked] public int RemainingGameStartTime { get; private set; }
    
@@ -55,14 +56,16 @@ public class GameManager : NetworkBehaviour
     private IEnumerator GameStartCountdown() {
 
         UnityEngine.Debug.Log($"GameStartCountingDown value of time {RemainingGameStartTime}");
-
+        countdownTitle = GameObject.Find("CountdownTitle")?.GetComponent<TMP_Text>();
         while (RemainingGameStartTime > 0)
         {
+            if(countdownTitle!=null) countdownTitle.text = "Game starts in\n" + RemainingGameStartTime;
             yield return new WaitForSeconds(1);
             RemainingGameStartTime--;
         }
 
         UnityEngine.Debug.Log("GameStart");
+        if(countdownTitle!=null) countdownTitle.gameObject.SetActive(false);
         GameManager.Instance.RpcStartGame();
     }
 
