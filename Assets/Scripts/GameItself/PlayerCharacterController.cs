@@ -11,12 +11,9 @@ using UnityEngine.UI;
 public class PlayerCharacterController : NetworkBehaviour
 {
     // Start is called before the first frame update
-
-    
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 10f;
-    [SerializeField] private GameObject jumpUICanvasPrefab; // prefab canvasa sa indikatorima preostalih jumpova
-    private GameObject jumpUICanvas;    // objekt koji drzi stvoreni canvas
+    private GameObject jumpUICanvas;
     [SerializeField] private float maxDistance = 0.5f;
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -25,7 +22,7 @@ public class PlayerCharacterController : NetworkBehaviour
     [SerializeField] private int maxJumps = 3;
 
 
-    private int jumpCount;
+    [Networked] private int jumpCount { get; set; }
     private bool jumpPressed;
 
 
@@ -37,20 +34,34 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
+                if (jumpUICanvas == null)
+        {
+            jumpUICanvas = transform.GetChild(0)?.gameObject;
+            if (jumpUICanvas == null)
+            {
+                UnityEngine.Debug.LogError("JumpUICanvas not found in player hierarchy!");
+            }
+        }
         DisablePlayerControls();
-        jumpUICanvas = Instantiate(jumpUICanvasPrefab);     // stvori canvas svakom igracu
     }
    
 
     public override void Spawned() {
         if (Runner.IsServer) InitServer();
+        jumpUICanvas.SetActive(Object.HasInputAuthority);
     }
 
     private void InitServer() {
         //UnityEngine.Debug.Log($"{NetworkPlayerSpawner.Instance.getSpawnLocation().x} {NetworkPlayerSpawner.Instance.getSpawnLocation().y}");
         //rb.position = NetworkPlayerSpawner.Instance.getSpawnLocation();
     }
-
+    private int lastCount = -50;
+    void Update(){
+        if(lastCount != jumpCount) {
+            UpdateJumps();
+            lastCount = jumpCount;
+        }
+    }
 
     public void DisablePlayerControls()
     {
@@ -85,7 +96,6 @@ public class PlayerCharacterController : NetworkBehaviour
                 jumpPressed = true;
                 jumpCount++;
                 UnityEngine.Debug.Log("Jumped");
-                UpdateJumps();  // nakon svakog skoka azuriraj jump cavnas
             }
 
             if (!input.Jump)
@@ -95,26 +105,16 @@ public class PlayerCharacterController : NetworkBehaviour
         }
     }
 
-private void UpdateJumps()
-{
-    // dohvati holder 3 jump indikator gameobjekta
-    GameObject jumpCirclesHolder = jumpUICanvas.transform.GetChild(0).GetChild(0).gameObject;
-
-    for (int i = 0; i < maxJumps; i++)
+    private void UpdateJumps()
     {
-        // Dodi do indikatora kruga
-        var jumpCircle = jumpCirclesHolder.transform.GetChild(i).transform.GetChild(0).GetComponent<Image>();
+        GameObject jumpCirclesHolder = jumpUICanvas.transform.GetChild(0).GetChild(0).gameObject;
 
-        if (i < jumpCount)  // postavi boju
+        for (int i = 0; i < maxJumps; i++)
         {
-            jumpCircle.color = Color.grey;
-        }
-        else
-        {
-            jumpCircle.color = Color.yellow;
+            var jumpCircle = jumpCirclesHolder.transform.GetChild(i).transform.GetChild(0).GetComponent<Image>();
+            jumpCircle.color = (i < jumpCount) ? Color.grey : Color.yellow;
         }
     }
-}
 
 
     private bool checkGrounded() {
@@ -131,20 +131,15 @@ private void UpdateJumps()
         return false;
     }
 
-
-
-    
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.contacts[0].normal.y > 0.1f)
         {
             isGrounded = true;
             jumpCount = 0;
-            UpdateJumps();
+            //UpdateJumps();
         }
     }
-
 
     private void OnCollisionExit2D(Collision2D collision)
     {

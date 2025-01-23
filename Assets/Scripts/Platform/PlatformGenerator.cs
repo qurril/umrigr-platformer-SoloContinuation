@@ -21,8 +21,11 @@ public class PlatformGenerator : NetworkBehaviour
     [SerializeField]
     float minWidth = 3f;
 
-    float screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
+    float screenWidth = 1280;
 
+    void Start(){
+        screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
+    }
     void Update()
     {
         if (Time.time % spawnRate < Time.deltaTime && Runner.IsServer)
