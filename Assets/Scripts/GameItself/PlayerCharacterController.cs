@@ -146,9 +146,10 @@ public class PlayerCharacterController : NetworkBehaviour
         isGrounded = false;
     }
 
-    public void HandleDeath()
+    [Rpc(RpcSources.StateAuthority,  RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_HandleDeath()
     {
-        if (Object.HasStateAuthority)
+       // if (Object.HasStateAuthority)
         {
             UnityEngine.Debug.Log($"Player {Object.InputAuthority.PlayerId} has died!");
             gameObject.SetActive(false);
