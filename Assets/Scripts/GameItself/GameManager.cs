@@ -28,7 +28,7 @@ public class GameManager : NetworkBehaviour
         GameObject[] spawnPlatforms = GameObject.FindGameObjectsWithTag("SpawnPlatform");
         spawnPoints = spawnPlatforms.Select(spawnPlatform => spawnPlatform.transform).ToList();
 
-        StartCoroutine(GameStartCountdown());
+        //StartCoroutine(GameStartCountdown());
     }
 
     private void Awake()
@@ -50,7 +50,10 @@ public class GameManager : NetworkBehaviour
         return spawnPosition;
 
     }
-
+    
+    public void StartGameCountdown(){
+        StartCoroutine(GameStartCountdown());
+    }
 
 
     private IEnumerator GameStartCountdown() {
@@ -61,7 +64,13 @@ public class GameManager : NetworkBehaviour
         {
             if(countdownTitle!=null) countdownTitle.text = "Game starts in\n" + RemainingGameStartTime;
             yield return new WaitForSeconds(1);
-            RemainingGameStartTime--;
+            
+            // server controlls the countdown
+            if (HasStateAuthority)
+            {
+                RemainingGameStartTime--;
+            }
+            
         }
 
         UnityEngine.Debug.Log("GameStart");
