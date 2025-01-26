@@ -13,6 +13,7 @@ public class PlayerCharacterController : NetworkBehaviour
     // Start is called before the first frame update
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 10f;
+    [SerializeField] float attackRange = 1.5f;
     private GameObject jumpUICanvas;
     [SerializeField] private float maxDistance = 0.5f;
     private Rigidbody2D rb;
@@ -24,6 +25,14 @@ public class PlayerCharacterController : NetworkBehaviour
 
     [Networked] private int jumpCount { get; set; }
     private bool jumpPressed;
+
+    private float lastAttackTime = 0f;
+    private float attackCooldown = 1f;
+    private bool isFacingRight = true;
+
+    public float lastHitTime = 0f;
+    private float hitDuration = 0.7f;
+    private float pushbackForce = 8f; // Force to apply for pushback
 
 
     private float defaultGravityScale = 1f;
@@ -77,6 +86,16 @@ public class PlayerCharacterController : NetworkBehaviour
         rb.gravityScale = defaultGravityScale;
     }
 
+    private void Flip()
+    {
+        UnityEngine.Debug.Log("Flipping");
+        isFacingRight = !isFacingRight;
+
+        Vector3 Scale = transform.localScale;
+        Scale.x *= -1;
+        transform.localScale = Scale;
+    }
+
 
     public override void FixedUpdateNetwork()
     {
@@ -85,23 +104,89 @@ public class PlayerCharacterController : NetworkBehaviour
           
         
             // Horizontal movement
-            float moveX = input.Movement.x;
-            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
 
-            // Debounce jump input
-            if (input.Jump && !jumpPressed && jumpCount < maxJumps)
+            float moveX = 0;
+            
+            // hit duration is 0.7s, slows down after 0.5s
+            // disable movement if target is recently hit
+            if (Time.time - lastHitTime > hitDuration){
+                moveX = input.Movement.x;
+                rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+            } 
+            // slow down x velocity after some time
+            else if (Time.time - lastHitTime > hitDuration - 0.3f){
+                
+                float delta = ((Time.time - lastHitTime) - (hitDuration - 0.3f)) / 0.3f;
+                rb.velocity = new Vector2(rb.velocity.x * (1 - delta) , rb.velocity.y);
+            }
+
+
+            if (moveX > 0 && !isFacingRight)
+            {
+                Flip();
+            }
+            else if (moveX < 0 && isFacingRight)
+            {
+                Flip();
+            }
+
+
+            
+            if (input.Attack && Time.time - lastAttackTime > attackCooldown)
+            {
+                lastAttackTime = Time.time;
+                Vector2 position = transform.position;
+                Vector2 scale = transform.localScale;
+                int right = isFacingRight ? 1 : -1;
+
+                Collider2D playerCollider = gameObject.GetComponent<Collider2D>();
+                float height = playerCollider.bounds.size.y;  
+
+                // check for other players in range
+                Vector2 pointA = new Vector2(position.x, position.y - height / 2);
+                Vector2 pointB = new Vector2((position.x + (attackRange * right)), position.y + height / 2);
+
+                
+                Collider2D[] colliders = Physics2D.OverlapAreaAll(pointA, pointB);
+
+                foreach (Collider2D collider in colliders)
+                {
+                    if (collider.gameObject.CompareTag("Player") && collider.gameObject != gameObject)
+                    {
+                        UnityEngine.Debug.Log("Hit player");
+                        if (collider.gameObject.TryGetComponent<NetworkObject>(out NetworkObject networkObject))
+                        {
+                            RpcApplyPushback(networkObject, right);
+                        }
+                    }
+                }
+
+            }
+
+            // Debounce jump input & cant jump if recently hit
+            if (input.Jump && !jumpPressed && jumpCount < maxJumps && Time.time - lastHitTime > hitDuration)
             {
 
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 jumpPressed = true;
                 jumpCount++;
-                UnityEngine.Debug.Log("Jumped");
+                //UnityEngine.Debug.Log("Jumped");
             }
 
             if (!input.Jump)
             {
                 jumpPressed = false;
             }
+        }
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcApplyPushback(NetworkObject target, int direction)
+    {   
+        if (target.TryGetComponent<Rigidbody2D>(out Rigidbody2D targetRb))
+        {
+            targetRb.velocity = new Vector2(direction * pushbackForce, 0);
+            target.GetComponent<PlayerCharacterController>().lastHitTime = Time.time;
         }
     }
 

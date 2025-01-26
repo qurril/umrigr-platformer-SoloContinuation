@@ -6684,7 +6684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45bda0020efe42c42991c81b1515fa0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 8722773547630684544, guid: abe2ae96db4ba4644a1865175ca33bcd, type: 3}
+  _playerPrefab: {fileID: 8722773547630684544, guid: e9ee22e8b18568341851b6ea889a5ebd, type: 3}
   _gameManagerPrefab: {fileID: 6439871339526697807, guid: cd76a33f084d65147a20af14a00935b8, type: 3}
   _networkRunnerPrefab: {fileID: 4025674159225223099, guid: 7aaeb5350b269e14299b874763b769b8, type: 3}
   _playerCount: 10

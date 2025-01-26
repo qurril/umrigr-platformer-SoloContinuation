@@ -35,7 +35,8 @@ public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
         NetorkData inputData = new NetorkData
         {
             Movement = new Vector2(Input.GetAxisRaw("Horizontal"), 0),
-            Jump = Input.GetKey(KeyCode.Space)
+            Jump = Input.GetKey(KeyCode.Space),
+            Attack = Input.GetKey(KeyCode.Mouse0)
         };
         input.Set(inputData);
     }
