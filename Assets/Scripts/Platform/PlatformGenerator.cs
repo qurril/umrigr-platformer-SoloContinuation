@@ -23,8 +23,11 @@ public class PlatformGenerator : NetworkBehaviour
 
     float screenWidth = 1280;
 
+   private NetworkRunner Runner;
+
     void Start(){
         screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
+        Runner = FindObjectOfType<NetworkRunner>();
     }
     void Update()
     {
