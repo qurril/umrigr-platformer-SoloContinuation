@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -3720060209472419236}
   - component: {fileID: 937612226217240931}
   - component: {fileID: -8987138648494159528}
+  - component: {fileID: -4964972757246790814}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -59,6 +60,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   groundedBuffer: 0.1
+  groundedTimer: 1
+  punchBuffer: 0.1
+  punchTimer: 1
+  hurtBuffer: 0.1
+  hurtTimer: 1
   maxJumps: 3
   lastHitTime: 0
 --- !u!212 &8816760143066205630
@@ -132,6 +138,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8722773547630684544}
   - {fileID: -3720060209472419236}
+  - {fileID: -4964972757246790814}
   ForceRemoteRenderTimeframe: 0
 --- !u!50 &2315959824645613908
 Rigidbody2D:
@@ -249,6 +256,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4964972757246790814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300286168496499420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: -8987138648494159528}
+  ApplyTiming: 2
+  SyncSettings: 79
+  StateHashes: 0000000095e7fd26ed59f547e332e86b9b8ce00a7d5022dd9332eaa82603c423f8a8854046d9d64198729722d0e9d1360e429055b941952aa446526de2542a6c0c36e219025e5a397ae05258bf56c9dda2510e9a
+  TriggerHashes: 0000000024abbf675c5f20ed
+  TotalWords: 3
 --- !u!1 &725964841907830897
 GameObject:
   m_ObjectHideFlags: 0

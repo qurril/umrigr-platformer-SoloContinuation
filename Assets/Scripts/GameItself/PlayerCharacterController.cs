@@ -29,6 +29,9 @@ public class PlayerCharacterController : NetworkBehaviour
     public float punchBuffer = 0.1f;
     public float punchTimer = 1f;
 
+    public float hurtBuffer = 0.1f;
+    public float hurtTimer = 1f;
+
     [Networked] public TickTimer timer { get; set; }
 
     [SerializeField] private int maxJumps = 3;
@@ -150,6 +153,14 @@ public class PlayerCharacterController : NetworkBehaviour
             else{
                 animator.SetBool("isPunching", false);
             }
+
+            if (hurtTimer > hurtBuffer)
+            {
+                hurtTimer += Time.deltaTime;
+            }
+            else{
+                animator.SetBool("isHurt", false);
+            }
             
             if (input.Attack && Time.time - lastAttackTime > attackCooldown)
             {
@@ -258,7 +269,9 @@ public class PlayerCharacterController : NetworkBehaviour
             targetRb.velocity = new Vector2(direction * pushbackForce, 0);
             target.GetComponent<PlayerCharacterController>().lastHitTime = Time.time;
 
-            animator.SetTrigger("Hurt");
+            // animator.SetTrigger("Hurt");
+            animator.SetBool("isHurt", true);
+            hurtTimer = 0f;
         }
     }
 
