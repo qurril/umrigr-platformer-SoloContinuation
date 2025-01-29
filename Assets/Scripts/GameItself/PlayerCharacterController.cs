@@ -19,6 +19,8 @@ public class PlayerCharacterController : NetworkBehaviour
     private Rigidbody2D rb;
     private bool isGrounded;
     public LayerMask platforms;
+    
+    private Collider2D playerCollider;
 
 
     private Animator animator;
@@ -56,6 +58,7 @@ public class PlayerCharacterController : NetworkBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerCollider = gameObject.GetComponent<Collider2D>();
 
                 if (jumpUICanvas == null)
         {
@@ -92,6 +95,7 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         Active = false;
         defaultGravityScale = rb.gravityScale;
+        playerCollider.enabled = false;
         rb.gravityScale = 0f;
         UnityEngine.Debug.Log($"Gravity stored as  {defaultGravityScale}");
     }
@@ -100,6 +104,7 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         Active = true;
         rb.gravityScale = defaultGravityScale;
+        playerCollider.enabled = true;
     }
 
     private void Flip()
@@ -169,7 +174,6 @@ public class PlayerCharacterController : NetworkBehaviour
                 Vector2 scale = transform.localScale;
                 int right = isFacingRight ? 1 : -1;
 
-                Collider2D playerCollider = gameObject.GetComponent<Collider2D>();
                 float height = playerCollider.bounds.size.y;  
 
                 // check for other players in range
