@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class proba : MonoBehaviour
+public class EnableStartGameButton : MonoBehaviour
 {   
     public Button gameButton;
 

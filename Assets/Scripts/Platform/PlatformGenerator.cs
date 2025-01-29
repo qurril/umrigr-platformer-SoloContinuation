@@ -23,6 +23,8 @@ public class PlatformGenerator : NetworkBehaviour
 
     float screenWidth = 1280;
 
+    public bool startSpawning = false;
+
    private NetworkRunner Runner;
 
     void Start(){
@@ -31,7 +33,7 @@ public class PlatformGenerator : NetworkBehaviour
     }
     void Update()
     {
-        if (Time.time % spawnRate < Time.deltaTime && Runner.IsServer)
+        if (Time.time % spawnRate < Time.deltaTime && Runner.IsServer && startSpawning)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-screenWidth / 2, screenWidth / 2) + Camera.main.transform.position.x, Camera.main.orthographicSize * 1.1f, 0);
 

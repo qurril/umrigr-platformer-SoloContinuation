@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  jumpForce: 9
+  jumpForce: 9.5
   attackRange: 1.5
   maxDistance: 0.5
   platforms:
