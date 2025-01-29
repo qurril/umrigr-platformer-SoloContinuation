@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 4591161761544886007}
   - component: {fileID: 490464344269593345}
   - component: {fileID: 8121518301501851602}
-  - component: {fileID: 6968392896979160175}
-  - component: {fileID: 3804450758895434258}
+  - component: {fileID: 6122854707094594981}
+  - component: {fileID: -5081508235471598119}
+  - component: {fileID: -6348283708424446019}
   m_Layer: 3
   m_Name: Platform_Bouncy
   m_TagString: Untagged
@@ -155,7 +156,7 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &6968392896979160175
+--- !u!114 &6122854707094594981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,12 +165,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 966239515115094471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a907e4ff6b3f6e2458d5ce2dfd289aae, type: 3}
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  motionMagnitude: 10
---- !u!114 &3804450758895434258
+  SortKey: 613606694
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -5081508235471598119}
+  - {fileID: -6348283708424446019}
+--- !u!114 &-5081508235471598119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,7 +184,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 966239515115094471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16a441c6e82d71c44b553b9610769968, type: 3}
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
+--- !u!114 &-6348283708424446019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966239515115094471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418cffafded92cd4295172869815e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedHorizontal: 5
+  speedVertical: 2
+  motionMagnitude: 3
+  _scale: {x: 0, y: 0, z: 0}

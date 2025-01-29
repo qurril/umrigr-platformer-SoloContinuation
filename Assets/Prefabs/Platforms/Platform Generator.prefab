@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6110922918550660177}
-  - component: {fileID: 6989795940019260859}
+  - component: {fileID: 5514105314107830187}
+  - component: {fileID: 8528058013046154564}
   m_Layer: 0
   m_Name: Platform Generator
   m_TagString: Untagged
@@ -32,7 +33,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6989795940019260859
+--- !u!114 &5514105314107830187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2821090136676200243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2067319691
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8528058013046154564}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &8528058013046154564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,14 +65,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformPrefabs:
-  - {fileID: 966239515115094471, guid: 24a5595952f598840a285a950915dac1, type: 3}
-  - {fileID: 4600006653436865025, guid: d8ebb0a355250a544b36064a0acb2160, type: 3}
-  - {fileID: 5770338040071018400, guid: 71be01d48676c024da8686c928e158b5, type: 3}
-  - {fileID: 1609822526786422185, guid: 9d0a0d9e534849f44b298e90e3741953, type: 3}
-  - {fileID: 3976129897324301931, guid: 3c3d820a6b27ecc4180ff28af98d794d, type: 3}
-  spawnRate: 2.5
-  maxHorizontalSpeed: 8
+  - RawGuidValue: 24a5595952f598840a285a950915dac1
+  - RawGuidValue: d8ebb0a355250a544b36064a0acb2160
+  - RawGuidValue: 71be01d48676c024da8686c928e158b5
+  - RawGuidValue: 71be01d48676c024da8686c928e158b5
+  - RawGuidValue: 9d0a0d9e534849f44b298e90e3741953
+  - RawGuidValue: 3c3d820a6b27ecc4180ff28af98d794d
+  spawnRate: 6
+  maxHorizontalSpeed: 10
   minHorizontalSpeed: 3
   verticalSpeed: 1
-  maxWidth: 10
-  minWidth: 5
+  maxWidth: 9
+  minWidth: 3
