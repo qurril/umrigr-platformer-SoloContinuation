@@ -20,6 +20,17 @@ public class PlayerCharacterController : NetworkBehaviour
     private bool isGrounded;
     public LayerMask platforms;
 
+
+    private Animator animator;
+
+    public float groundedBuffer = 0.05f;
+    public float groundedTimer = 1f;
+
+    public float punchBuffer = 0.1f;
+    public float punchTimer = 1f;
+
+    [Networked] public TickTimer timer { get; set; }
+
     [SerializeField] private int maxJumps = 3;
 
 
@@ -52,6 +63,8 @@ public class PlayerCharacterController : NetworkBehaviour
             }
         }
         DisablePlayerControls();
+        animator = GetComponent<Animator>();
+        animator.SetBool("isIdle", true);
     }
    
 
@@ -130,7 +143,13 @@ public class PlayerCharacterController : NetworkBehaviour
                 Flip();
             }
 
-
+            if (punchTimer > punchBuffer)
+            {
+                punchTimer += Time.deltaTime;
+            }
+            else{
+                animator.SetBool("isPunching", false);
+            }
             
             if (input.Attack && Time.time - lastAttackTime > attackCooldown)
             {
@@ -160,7 +179,10 @@ public class PlayerCharacterController : NetworkBehaviour
                         }
                     }
                 }
-
+                animator.SetInteger("punch", UnityEngine.Random.Range(1, 3));
+                // animator.SetTrigger("Punch");
+                animator.SetBool("isPunching", true);
+                punchTimer = 0f;
             }
 
             // Debounce jump input & cant jump if recently hit
@@ -170,14 +192,62 @@ public class PlayerCharacterController : NetworkBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 jumpPressed = true;
                 jumpCount++;
-                //UnityEngine.Debug.Log("Jumped");
+                UnityEngine.Debug.Log("Jumped");
+                ResetAnimator();
+                animator.SetBool("isJumping", true);
             }
 
             if (!input.Jump)
             {
                 jumpPressed = false;
             }
+
+            UnityEngine.Debug.Log("timer running vel");
+            UnityEngine.Debug.Log(groundedTimer < groundedBuffer);
+            UnityEngine.Debug.Log(rb.velocity.y);
+
+            if (groundedTimer < groundedBuffer)
+            // if (checkGrounded())
+            {
+                UnityEngine.Debug.Log("pressed, move");
+                UnityEngine.Debug.Log(jumpPressed);
+                UnityEngine.Debug.Log(moveX);
+                if (!jumpPressed){
+                    if (moveX != 0)
+                    {
+                        ResetAnimator();
+                        animator.SetBool("isRunning", true);
+                    }
+                    else{
+                        ResetAnimator();
+                        animator.SetBool("isIdle", true);
+                    }
+                }
+                groundedTimer += Time.deltaTime;
+            }
+            else if (rb.velocity.y <= 0)
+            {
+                ResetAnimator();
+                animator.SetBool("isFalling", true);
+            }
+            else if (rb.velocity.y > 0)
+            {
+                ResetAnimator();
+                animator.SetBool("isJumping", true);
+            }
         }
+    }
+
+    private void ResetAnimator()
+    {
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isJumping", false);
+        // animator.SetBool("isPunching", false);
+        // animator.ResetTrigger("Hurt");
+        // animator.ResetTrigger("Punch");
+        animator.SetBool("isDead", false);
+        animator.SetBool("isFalling", false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -187,6 +257,8 @@ public class PlayerCharacterController : NetworkBehaviour
         {
             targetRb.velocity = new Vector2(direction * pushbackForce, 0);
             target.GetComponent<PlayerCharacterController>().lastHitTime = Time.time;
+
+            animator.SetTrigger("Hurt");
         }
     }
 
@@ -223,6 +295,8 @@ public class PlayerCharacterController : NetworkBehaviour
             isGrounded = true;
             jumpCount = 0;
             //UpdateJumps();
+            // timer = TickTimer.CreateFromSeconds(Runner, groundedBuffer);
+            groundedTimer = 0;
         }
     }
 

@@ -57,6 +57,8 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         _runner.ProvideInput = true;
 
         await _runner.StartGame(new StartGameArgs { SessionName = sessionName, GameMode = GameMode.Client });
+
+        AudioManager.Instance.PlayMusic("JDSherbert - Minigame Music Pack - Streetlights");
     }
 
     
@@ -71,6 +73,9 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
             SceneManager = _networkSceneManager,
 
         });
+
+        UnityEngine.Debug.Log("music play");
+        AudioManager.Instance.PlayMusic("JDSherbert - Minigame Music Pack - Streetlights");
     }
 
     public void LeaveSession()
@@ -79,6 +84,8 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         SceneManager.LoadScene(0);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        AudioManager.Instance.PlayMusic("JDSherbert - Minigame Music Pack - Digital Waves");
     }
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
