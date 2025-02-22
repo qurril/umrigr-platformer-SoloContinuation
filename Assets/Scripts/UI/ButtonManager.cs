@@ -8,7 +8,8 @@ public class ButtonManager : MonoBehaviour
     public RectTransform[] buttons; // Array of buttons for the main menu
     public RectTransform[] backButtons; // Array of Back button RectTransforms
     public Button optionsButton;     // Reference to the Options button
-    public Button backButtonUI;      // Reference to the Back button UI
+    public Button backButtonUI;
+    public Slider volume;// Reference to the Back button UI
     public float moveDistance = 500f; // Distance to move buttons off-screen
     public float moveDuration = 0.5f; // Duration of the move animation
 
@@ -46,9 +47,21 @@ public class ButtonManager : MonoBehaviour
             backButton.anchoredPosition = new Vector2(backButton.anchoredPosition.x, offScreenAboveY);
         }
 
+        if (AudioManager.Instance != null) {
+            volume.value = AudioManager.Instance.musicVolume;
+        }
+        else
+        {
+            volume.value = 1f;
+        }
+
         // Add listeners for button click events
         optionsButton.onClick.AddListener(MoveToOptionsMenu);
         backButtonUI.onClick.AddListener(MoveToMainMenu);
+        volume.onValueChanged.AddListener((float value) => {
+            AudioManager.Instance.AdjustVolume(value);
+            
+        });
     }
 
     private void MoveToOptionsMenu()

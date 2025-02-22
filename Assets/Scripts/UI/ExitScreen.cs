@@ -12,6 +12,7 @@ public class ExitScreen : MonoBehaviour
 
     public Button gameStart = null;
     public Button _quit = null;
+    public Button _mainMenu = null;
 
     public TMP_Text winnerTitle;
 
@@ -22,9 +23,10 @@ public class ExitScreen : MonoBehaviour
 
     private void Awake()
     {
-        // _mainMenu.onClick.AddListener(() => {
-        //     UnityEngine.SceneManagement.SceneManager.LoadScene("SessionsTest", UnityEngine.SceneManagement.LoadSceneMode.Single);
-        // });
+         _mainMenu.onClick.AddListener(() => {
+             FusionConnection.Instance.LeaveSession();
+             //UnityEngine.SceneManagement.SceneManager.LoadScene("SessionsTest", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        });
 
         _quit.onClick.AddListener(() => {
 #if UNITY_EDITOR

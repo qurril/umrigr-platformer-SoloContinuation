@@ -9,7 +9,10 @@ public class SessionView : Singleton<SessionView>
     [SerializeField] private Button _createRoom = null;
     [SerializeField] private Button _refreshButton = null;
     [SerializeField] private Button _joinButton = null;
+    [SerializeField] private Button _backButton = null;
     [SerializeField] private GameObject _roomCreate=null;
+    [SerializeField] private GameObject _sessionView = null;
+    [SerializeField] private GameObject _mainMenu = null;
     [SerializeField] private SessionInfoView _sessionInfoprefab = null;
 
     [SerializeField] private ToggleGroup _sessionListContainer = null;
@@ -38,6 +41,12 @@ public class SessionView : Singleton<SessionView>
         _refreshButton.onClick.AddListener(UpdateSessionList);
         _joinButton.onClick.AddListener(() => {
             FusionConnection.Instance.JoinSession(sessionName);
+        });
+        _backButton.onClick.AddListener(() => { 
+            
+           // FusionConnection.Instance.QuitLobby();
+            _sessionView.SetActive(false);
+            _mainMenu.SetActive(true) ;
         });
     }
     public void UpdateSessionList() {

@@ -24,6 +24,8 @@ public class StartView : MonoBehaviour
 #endif
         });
 
+        
+
         if (FusionConnection.Instance.PlayerName != null) {
             _login.SetActive(false);
             _sessionExplore.SetActive(true);
@@ -31,15 +33,30 @@ public class StartView : MonoBehaviour
         }
 
 
+        //GameObject backgroundHandler = GameObject.Find("Fusion_PhotonBackgroundConnectionHandler");
+
+        //if (backgroundHandler != null)
+        //{
+        //    Destroy(backgroundHandler);
+        //}
+
     }
 
     private void StartPressed() {
-        _start.interactable = false;
-        _quit.interactable = false;
+        //_start.interactable = false;
+        //_quit.interactable = false;
 
         FusionConnection.Instance.ConnectToLobby("TestName");
         _login.SetActive(false);
         _sessionExplore.SetActive(true);
+        /*
+        GameObject backgroundHandler = GameObject.Find("Fusion_PhotonBackgroundConnectionHandler");
+
+        if (backgroundHandler != null)
+        {
+           Destroy(backgroundHandler);
+        }
+        */
     }
 
 }

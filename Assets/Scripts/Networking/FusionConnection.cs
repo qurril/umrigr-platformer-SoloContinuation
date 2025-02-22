@@ -33,7 +33,7 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
     public string PlayerName => _playerName;
 
 
-
+    
     private void Awake()
     {
         base.Awake();
@@ -50,9 +50,27 @@ public class FusionConnection : SingletonPersistent<FusionConnection>, INetworkR
         _runner.JoinSessionLobby(SessionLobby.ClientServer);
     }
 
-    //Ovdew ide spajanje na session i kreiranje sessiona
+    public void QuitLobby() {
+        _playerName= null;
+        _runner.Shutdown();
+        StartCoroutine(QuitLobbyCoroutine());
+    }
 
-    public async void JoinSession(string sessionName)
+    private IEnumerator QuitLobbyCoroutine()
+    {
+
+        _runner.Shutdown();
+
+        while (_runner.IsRunning)
+        {
+            yield return null; // Wait one frame and check again
+        }
+
+    }
+
+        //Ovdew ide spajanje na session i kreiranje sessiona
+
+        public async void JoinSession(string sessionName)
     {
         _runner.ProvideInput = true;
 

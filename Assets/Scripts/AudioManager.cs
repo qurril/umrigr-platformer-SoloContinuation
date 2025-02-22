@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
 
+    public float musicVolume = 0;
     private void Awake()
     {
         if (Instance == null)
@@ -25,6 +26,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         // PlayMusic("JDSherbert - Minigame Music Pack - Streetlights");
+        musicSource.volume = musicVolume;
         musicSource.clip = musicSounds[0];
         musicSource.Play();
     }
@@ -34,10 +36,15 @@ public class AudioManager : MonoBehaviour
         musicSource.Stop();
     }
 
+    public void AdjustVolume(float volume) {
+        musicVolume = volume;
+        musicSource.volume = volume;
+    }
+
     public void PlayMusic(string name)
     {
         AudioClip s = Array.Find(musicSounds, x => x.name == name);
-
+        AdjustVolume(musicVolume);
         if (s == null)
         {
             Debug.Log("Sound Not Found: " + name);
